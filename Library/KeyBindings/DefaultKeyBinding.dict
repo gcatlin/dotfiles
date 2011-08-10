@@ -1,0 +1,7 @@
+/* ~/Library/KeyBindings/DefaultKeyBinding.dict */
+{
+	/* Emacs-isms */
+	"^t" = ("transpose:", "moveBackward:");
+	"^u" = "deleteToBeginningOfLine:";
+	"^w" = "deleteWordBackward:";
+}

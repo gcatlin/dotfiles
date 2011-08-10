@@ -1,0 +1,12 @@
+[user]
+	name = Geoff Catlin
+	email = gcatlin@gmail.com
+[core]
+	editor = mate -w
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+	ui = auto
+[alias]
+	st = status
