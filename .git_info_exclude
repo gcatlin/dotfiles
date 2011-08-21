@@ -1,0 +1,33 @@
+# git ls-files --others --exclude-from=.git/info/exclude
+# Lines that start with '#' are comments.
+# For a project mostly in C, the following would be a good set of
+# exclude patterns (uncomment them if you want to use them):
+# *.[oa]
+# *~
+
+# Blacklist all directories, then whitelist all hidden directories
+*/
+!.*/
+
+# Allow this file to be version controlled
+# .git/*
+# !.git/info/exclude
+
+# Blacklist
+.*history
+.lesshst
+.viminfo
+
+# Ignore .ssh dir
+.ssh/
+
+# Whitelist subversion config
+.subversion
+!.subversion/config
+
+# Ignore OS files
+.CFUserTextEncoding
+.cups
+.DS_Store
+.fontconfig
+.Trash
