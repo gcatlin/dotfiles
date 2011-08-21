@@ -3,6 +3,7 @@
 	email = gcatlin@gmail.com
 [core]
 	editor = mate -w
+	pager = less
 [color]
 	diff = auto
 	status = auto
