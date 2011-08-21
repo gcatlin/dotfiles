@@ -58,3 +58,5 @@ alias j='jobs -l'
 alias path='echo -e ${PATH//:/\\n}'
 alias cdpath='echo -e ${CDPATH//:/\\n}'
 alias libpath='echo -e ${LD_LIBRARY_PATH//:/\\n}'
+
+alias git=hub
