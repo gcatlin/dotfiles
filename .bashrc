@@ -1,6 +1,9 @@
-#=============================================================
-#
 # ~/.bashrc
+#
+# This file is sourced by all *interactive* bash shells on startup,
+# including some apparently interactive shells such as scp and rcp
+# that can't tolerate any output.  So make sure this doesn't display
+# anything or bad things will happen !
 #
 # http://www.gnu.org/software/bash/manual/bashref.html
 #
@@ -8,15 +11,22 @@
 # http://www.caliban.org/bash/
 # http://www.shelldorado.com/scripts/categories.html
 # http://www.dotfiles.org/
-#
-#=============================================================
 
-# If not running interactively, don't do anything
-[ -z "$PS1" ] && return
+# Test for an interactive shell.  There is no need to set anything
+# past this point for scp and rcp, and it's important to refrain from
+# outputting anything in those cases.
+if [[ $- != *i* ]] ; then
+	# Shell is non-interactive.  Be done now!
+	return
+fi
 
-#-------------------------------------------------------------
-# Shell Prompt
-#-------------------------------------------------------------
+
+# Bash won't get SIGWINCH if another process is in the foreground.
+# Enable checkwinsize so that bash will check the terminal size when
+# it regains control.  #65623
+# http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11)
+shopt -s checkwinsize
+
 
 # Change the window title of X terminals
 case ${TERM} in
@@ -34,29 +44,30 @@ case ${TERM} in
 esac
 
 # Set the prompt
+# See https://wiki.archlinux.org/index.php/Color_Bash_Prompt
 if ${use_color} ; then
 	# Define some colors (with transparent background)
-	BLACK='\e[0;30m'
-	RED='\e[0;31m'
-	GREEN='\e[0;32m'
-	YELLOW='\e[0;33m'
-	BLUE='\e[0;34m'
-	MAGENTA='\e[0;35m'
-	CYAN='\e[0;36m'
-	WHITE='\e[0;37m'
-	NONE='\e[0m'
+	reset=$(tput sgr0)
+	black=$(tput setaf 0)
+	red=$(tput setaf 1)
+	green=$(tput setaf 2)
+	yellow=$(tput setaf 3)
+	blue=$(tput setaf 4)
+	magenta=$(tput setaf 5)
+	cyan=$(tput setaf 6)
+	white=$(tput setaf 7)
 
 	# set color prompt
 	if [[ ${EUID} == 0 ]] ; then
-		PS1="${RED}\u${NONE}@${BLUE}\h${NONE}:${MAGENTA}\w${NONE}# "    # root
+		PS1='\[$red\]\u\[$reset\]@\[$blue\]\h\[$reset\]:\[$magenta\]\w\[$reset\]# '   # root
 	else
-		PS1="${BLUE}\u${NONE}@${BLUE}\h${NONE}:${MAGENTA}\w${NONE}\$ "  # not root
+		PS1='\[$blue\]\u\[$reset\]@\[$blue\]\h\[$reset\]:\[$magenta\]\w\[$reset\]\$ ' # non-root
 	fi
 else
 	if [[ ${EUID} == 0 ]] ; then
 		PS1='\u@\h:\w# '  # root
 	else
-		PS1='\u@\h:\w\$ ' # not root
+		PS1='\u@\h:\w\$ ' # non-root
 	fi
 fi
 unset use_color
@@ -70,7 +81,7 @@ ulimit -S -c 0          # Disable core dumps
 set -o notify
 set -o noclobber
 set -o nounset
-#set -o xtrace
+# set -o xtrace
 
 # Number of consecutive EOF characters that can be read as the first character
 # on an input line before the shell will exit
@@ -119,12 +130,7 @@ fi
 export PAGER=less
 export LESSCHARSET='latin1'
 export LESSOPEN='|/usr/local/bin/lesspipe.sh %s 2>&-'
-export LESS='-i -w -z -4 -g -e -M -X -F -R -P%t?f%f \
-:stdin .?pb%pb\%:?lbLine %lb:?bbByte %bb:-...'
-
-# ignore case, long prompt, exit if it fits on one screen, allow colors for ls
-# and grep colors, display search target at line 4, skip current screen for search
-# export LESS="-iMFXrj4a"
+export LESS='-F -i -M -R -W -X -z-2'
 
 
 #-------------------------------------------------------------
