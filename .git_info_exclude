@@ -9,25 +9,19 @@
 */
 !.*/
 
-# Allow this file to be version controlled
-# .git/*
-# !.git/info/exclude
+# Blacklist OS-related files and directories
+.CFUserTextEncoding
+.cups/
+.DS_Store
+.fontconfig/
+.Trash/
 
-# Blacklist
+# Blacklist hidden files and directories that pose a security risk
 .*history
 .lesshst
+.ssh/
+.subversion/
 .viminfo
 
-# Ignore .ssh dir
-.ssh/
-
 # Whitelist subversion config
-.subversion
 !.subversion/config
-
-# Ignore OS files
-.CFUserTextEncoding
-.cups
-.DS_Store
-.fontconfig
-.Trash
