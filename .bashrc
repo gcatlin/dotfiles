@@ -6,23 +6,29 @@
 # http://www.shelldorado.com/scripts/categories.html
 # http://www.dotfiles.org/
 
+#-------------------------------------------------------------
 # Test for an interactive shell. There is no need to set anything
 # past this point for scp and rcp, and it's important to refrain from
 # outputting anything in those cases.
+#-------------------------------------------------------------
 if [[ $- != *i* ]] ; then
 	# Shell is non-interactive.  Be done now!
 	return
 fi
 
 
+#-------------------------------------------------------------
 # Bash won't get SIGWINCH if another process is in the foreground.
 # Enable checkwinsize so that bash will check the terminal size when
 # it regains control.  #65623
 # http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11)
+#-------------------------------------------------------------
 shopt -s checkwinsize
 
 
+#-------------------------------------------------------------
 # Change the window title of X terminals
+#-------------------------------------------------------------
 case ${TERM} in
 	xterm*|rxvt*|Eterm|aterm|kterm|gnome*|interix)
 		PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/$HOME/~}\007"'
@@ -36,6 +42,12 @@ case ${TERM} in
 		use_color=false
 		;;
 esac
+
+#-------------------------------------------------------------
+# Useful functions
+#-------------------------------------------------------------
+function command_exists () { hash "$1" 2>&- ; }
+
 
 #-------------------------------------------------------------
 # Command prompt appearance
@@ -67,7 +79,26 @@ else
 		PS1='\u@\h:\w\$ ' # non-root
 	fi
 fi
-unset use_color
+
+#-------------------------------------------------------------
+# Colorful command output for ls and grep
+#-------------------------------------------------------------
+d=$HOME/.dircolors
+if ${use_color} ; then
+	# Enable colored file listings
+	if command_exists gdircolors ; then
+		test -r $d && eval "$(gdircolors -b $d)" || eval "$(gdircolors -b)"
+	elif command_exists dircolors ; then
+		test -r $d && eval "$(dircolors -b $d)" || eval "$(dircolors -b)"
+	fi
+
+	# Enable color support for ls
+	export LS_OPTIONS='--color'
+
+	# Enable color support for grep
+	export GREP_OPTIONS="--color=auto"
+	export GREP_COLORS='mt=30;43:fn=35:ln=32:se=36'
+fi
 
 
 #-------------------------------------------------------------
@@ -96,27 +127,24 @@ export HISTIGNORE="&:[ ]*:bg:fg:ls:ll:la:h"
 
 
 #-------------------------------------------------------------
-# Aliases
-#
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-#-------------------------------------------------------------
-if [ -f ~/.bash_aliases ]; then
-	. ~/.bash_aliases
-fi
-
-# Enable color support of ls and also add handy aliases
-# if [ "$TERM" != "dumb" ]; then
-#     eval "`dircolors -b`"
-# fi
-
-
-#-------------------------------------------------------------
 # Tweak 'less'
 #-------------------------------------------------------------
 export PAGER=less
 export LESS='-F -i -M -R -W -X -z-2'
 export LESSCHARSET='latin1'
 export LESSOPEN='|/usr/local/bin/lesspipe.sh %s 2>&-'
+
+
+#-------------------------------------------------------------
+# Tweak 'ls'
+#-------------------------------------------------------------
+LS_OPTIONS="-Fh -T 0 $LS_OPTIONS"  # defined above
+if command_exists gls ; then
+	LS="$(type -p gls) $LS_OPTIONS"
+else
+	LS="/bin/ls $LS_OPTIONS"
+fi
+export LS
 
 
 #-------------------------------------------------------------
@@ -141,16 +169,24 @@ shopt -s no_empty_cmd_completion
 
 export FIGNORE=.svn
 
-if [ -f $(which brew) ]; then
+if command_exists brew ; then
 	bp=$(brew --prefix)
 
-	if [ -f $bp/etc/bash_completion ]; then
-	  . $bp/etc/bash_completion
-	fi
+	# if [ -f $bp/etc/bash_completion ]; then
+	# 	. $bp/etc/bash_completion
+	# fi
 	
-	if [ -f $bp/Library/Contributions/brew_bash_completion.sh ]; then
+	if [ -f $bp/Library/Contributions/brew_bash_completion.sh ] ; then
 		. $bp/Library/Contributions/brew_bash_completion.sh
 	fi
+fi
 
-	unset bp
+
+#-------------------------------------------------------------
+# Aliases
+#
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+#-------------------------------------------------------------
+if [ -f ~/.bash_aliases ] ; then
+	. ~/.bash_aliases
 fi

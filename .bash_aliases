@@ -1,15 +1,15 @@
 #-------------------------------------------------------------
 # The 'ls' family
 #-------------------------------------------------------------
-alias ls='ls -hFG'         # add colors for filetype recognition
-alias ll='ls -l'           # long listing
-alias la='ls -lA'          # show hidden files
-alias lk='ls -lSr'         # sort by size, biggest last
-alias lc='ls -ltrc'        # sort by and show change time, most recent last
-alias lu='ls -ltru'        # sort by and show access time, most recent last
-alias lt='ls -ltr'         # sort by date, most recent last
-alias lr='ls -lR'          # recursive ls
-alias tree='tree -Csu'     # nice alternative to 'recursive ls'
+alias ls="$LS"
+alias ll="$LS -l"      # long listing
+alias la="$LS -lA"     # show hidden files
+alias lk="$LS -lSr"    # sort by size, biggest last
+alias lc="$LS -ltrc"   # sort by and show change time, most recent last
+alias lu="$LS -ltru"   # sort by and show access time, most recent last
+alias lt="$LS -ltr"    # sort by date, most recent last
+alias lr="$LS -lR"     # recursive ls
+alias tree='tree -Csu' # nice alternative to 'recursive ls'
 
 
 #-------------------------------------------------------------
@@ -41,11 +41,7 @@ function ff() { find . -type f -iname '*'$*'*' -ls ; }
 #-------------------
 # Miscellaneous
 #-------------------
-alias myip="ifconfig | grep 'inet ' | grep -v 127.0.0.1 | cut -d ' ' -f 2"
-
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+alias ip="ifconfig | grep 'inet ' | grep -v 127.0.0.1 | cut -d ' ' -f 2"
 
 alias cwd='pwd'
 
@@ -55,15 +51,19 @@ alias mkdir='mkdir -p'
 alias h='history'
 alias j='jobs -l'
 
+if ! command_exists rgrep ; then
+	alias rgrep='grep -r'
+fi
+
 alias path='echo -e ${PATH//:/\\n}'
 alias cdpath='echo -e ${CDPATH//:/\\n}'
 alias libpath='echo -e ${LD_LIBRARY_PATH//:/\\n}'
 
-if [ -f `which colorsvn` ]; then
+if command_exists colorsvn ; then
 	alias svn=colorsvn
 fi
 
-if [ -f `which hub` ]; then
+if command_exists hub; then
 	alias git=hub
 fi
 
