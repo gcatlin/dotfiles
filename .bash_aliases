@@ -41,7 +41,7 @@ function ff() { find . -type f -iname '*'$*'*' -ls ; }
 #-------------------
 # Miscellaneous
 #-------------------
-alias myip="ifconfig | grep 'inet ' | grep -v 127.0.0.1 | cut -d\  -f 2"
+alias myip="ifconfig | grep 'inet ' | grep -v 127.0.0.1 | cut -d ' ' -f 2"
 
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
@@ -59,4 +59,14 @@ alias path='echo -e ${PATH//:/\\n}'
 alias cdpath='echo -e ${CDPATH//:/\\n}'
 alias libpath='echo -e ${LD_LIBRARY_PATH//:/\\n}'
 
-alias git=hub
+if [ -f `which colorsvn` ]; then
+	alias svn=colorsvn
+fi
+
+if [ -f `which hub` ]; then
+	alias git=hub
+fi
+
+if [ -f /Applications/Preview.app ] ; then
+	function manpdf { man -t $* | open -f -a /Applications/Preview.app ; }
+fi
