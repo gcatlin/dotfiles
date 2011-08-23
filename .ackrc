@@ -8,8 +8,8 @@
 # The color alone sets the foreground color, and on_color sets the
 # background color.
 --color-filename=blue
---color-match=black on_white
---color-lineno=bold black
+--color-match=black on_yellow
+--color-lineno=green
 
 # Flush output immediately, even when ack is used non-interactively
 --flush
