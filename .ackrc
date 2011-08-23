@@ -1,2 +1,24 @@
---pager=less -WRXFin
+# Set the color for filenames, matches, and line numbers.
+#
+# The recognized attributes are clear, reset, dark, bold, underline,
+# underscore, blink, reverse, concealed, black, red, green, yellow,
+# blue, magenta, on_black, on_red, on_green, on_yellow, on_blue,
+# on_magenta, on_cyan, and on_white.  Case is not significant.
+# Underline and underscore are equivalent, as are clear and reset.
+# The color alone sets the foreground color, and on_color sets the
+# background color.
+--color-filename=blue
+--color-match=black on_white
+--color-lineno=bold black
+
+# Flush output immediately, even when ack is used non-interactively
+--flush
+
+# Follow symlinks
+--follow
+
+# Pipes all ack output through less
+--pager=less
+
+# Ignore case distinctions in PATTERN, only if PATTERN contains no upper case
 --smart-case
