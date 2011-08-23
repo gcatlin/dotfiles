@@ -23,5 +23,8 @@
 .subversion/
 .viminfo
 
+# Whitelist users bin directory
+!bin/
+
 # Whitelist subversion config
 !.subversion/config
