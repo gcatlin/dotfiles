@@ -32,10 +32,10 @@ SysReq:       \UF731        Menu:         \UF735
 	"@$\UF72B" = "moveToEndOfDocumentAndModifySelection:";       /* Command + Shift + End */
 
 	/* page up/down */
-	"\\UF72C"  = "pageUp:";   /* PageUp */
-	"\\UF72C"  = "pageUp:";   /* Shift + PageUp */
-	"\\UF72D"  = "pageDown:"; /* PageDown */
-	"\\UF72D"  = "pageDown:"; /* Shift + PageDown */
+	"\UF72C"  = "pageUp:";   /* PageUp */
+	"\UF72C"  = "pageUp:";   /* Shift + PageUp */
+	"\UF72D"  = "pageDown:"; /* PageDown */
+	"\UF72D"  = "pageDown:"; /* Shift + PageDown */
 
 	/* Ctrl shortcuts */
 	"^ " = "setMark:"; /* C-space */
