@@ -2,7 +2,7 @@
 	name = Geoff Catlin
 	email = gcatlin@gmail.com
 [core]
-	editor = mate -w
+	editor = vi
 	pager = less
 [color]
 	diff = auto
