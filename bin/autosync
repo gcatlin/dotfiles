@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+require 'rb-fsevent'
+require 'open3'
+
+def popen cmd
+	Open3.popen3 cmd do |stdin, stdout, stderr|
+		stdout.read.split("\n").each do |line|
+			puts "#{Time.new} #{line}"
+		end
+	end
+end
+
+src = File.absolute_path ARGV[0] unless !File.directory? ARGV[0]
+src << '/' unless src.end_with? '/'
+
+dst = ARGV[1].dup
+dst << '/' unless dst.end_with? '/'
+
+rsync_opts = "-dlptgoDvz --delete"
+rsync_excludes = "--exclude=.svn --exclude=.DS_Store"
+
+popen "rsync #{rsync_opts} #{rsync_excludes} #{src} #{dst}"
+
+fsevent = FSEvent.new
+fsevent.watch src do |dirs|
+	dirs.each do |dir|
+		dir.slice! src
+		popen "rsync #{rsync_opts} #{rsync_excludes} #{src}#{dir} #{dst}#{dir}"
+	end
+end
+fsevent.run
