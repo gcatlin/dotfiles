@@ -22,6 +22,7 @@
 .ssh/
 .subversion/
 .viminfo
+.w3m/history
 
 # Whitelist users bin directory
 !bin/
